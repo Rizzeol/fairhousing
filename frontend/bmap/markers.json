@@ -1,0 +1,17 @@
+markers = [
+{
+
+"url" : "https://www.youtube.com",
+"lat": 52.5000,
+"lng": 13.3913
+},
+
+{
+	
+"url" : "https://www.youtube.com",
+"lat": 52.4814,
+"lng": 13.3661
+}
+
+
+];
