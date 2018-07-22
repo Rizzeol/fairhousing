@@ -31,7 +31,9 @@ app.get('/byname/:name',(req,res)=>{handle_get_by_name(req,res)})
 app.post('/contract/add', upload.array(), (req,res)=>{handle_add_contract(req,res)})
 app.post('/contract/cancel', upload.array(), (req,res)=>{handle_cancel_contract(req,res)})
 
-app.get('/property/:id?', (req, res) => {handle_get_prop_by_id(req, res)})
+app.get('/data/property/:id?', (req, res) => {handle_get_prop_by_id(req, res)})
+
+app.get('/property/:id?', (req, res) => {handle_get_prop_by_id_html(req, res)})
 app.get('/areacode/:ac', (req, res) => {handle_get_by_area_code(req, res)})
 
 
@@ -46,27 +48,32 @@ function handle_get_by_name(req,res){
 
     console.log("params:")
     console.log(req.params)
-
-   /* dcorejs.account().getAccountByName(my_account_name)
-        .then(res => {
-            console.log("### register account: Success\n");
-            console.log(res);
-        })
-        .catch(err => {
-            console.log("### register account: Error\n");
-            console.log(err);
-        });*/
 }
 
 // GET /property/:id
-function handle_get_prop_by_id(req, res){
+const handle_get_prop_by_id = async (req, res) =>{
     if(!!req.params.id){
-        r = get_prop_by_id(req.params.id)
+        r = await get_prop_by_id(req.params.id)
         res.json(r)
     } else {
         //fetch all
         res.json(prop_db);
     }
+}
+
+// GET /property/:id
+const handle_get_prop_by_id_html = async (req, res) =>{
+    if(!!req.params.id){
+        r = await get_prop_by_id_html(req.params.id)
+        res.send(r)
+    } else {
+        //fetch all
+        res.json(prop_db);
+    }
+}
+
+const handle_get_landlord_contracts = async (req, res) =>{
+    res.json(await get_landlord_contracts(req.params.name));
 }
 
 // GET /areacode/:ac
@@ -76,7 +83,7 @@ function handle_get_by_area_code(req, res){
 }
 
 // POST /contract/add
-function handle_add_contract(req, res){
+const handle_add_contract = async (req, res) => {
     console.warn("Adding contract")
     //console.log(req.body)
     if(!!req.body.l &&
@@ -84,6 +91,8 @@ function handle_add_contract(req, res){
        !!req.body.price &&
        !!req.body.prop_id &&
        !!req.body.sublet){
+
+       prop 
    
         register_contract(req.body.l, req.body.t,
                           [req.body.price, req.body.sublet,req.body.prop_id])
@@ -107,16 +116,13 @@ function handle_cancel_contract(req, res){
     }
 }
 
-function handle_get_landlord_contracts(req, res){
-    res.json(get_landlord_contracts(req.params.name));
-}
-
 function handle_get_tenant_contracts(req, res){
     res.json(get_tenant_contracts(req.params.name));
 }
 
 // private API
-function get_landlord_contracts(name){
+const get_landlord_contracts = async (name) => {
+    console.log("lookup landlord contracts")
     var pk = lookup_pk(name); 
     if(pk==""){
         return -1;
@@ -132,26 +138,30 @@ function get_landlord_contracts(name){
                         console.log(item.receivers_data);
                         console.log(item.text)
                     });
-                    return msg; 
                 })
         })
         .catch(err =>{
             console.error(err);
-            return -1;
         })
+
+    console.log("async...")
+    var account = await dcorejs.account().getAccountByName(name);
+    //console.log(account);
+    var msgs = await dcorejs.messaging().getSentMessages(account.id, pk)
+    return msgs;    
 }
 
 function get_tenant_contracts(name){
-   // var pk = lookup_pk(name); 
-   // if(pk==""){
-   //     return -1;
-   // }
+   var pk = lookup_pk(name); 
+    if(pk==""){
+        return -1;
+    }
    //pk_sender="5K7cpdd3ShccurdjQecH8zSRkncT81hUz33MdNV2spYufqGoFTg";
     dcorejs.account().getAccountByName(name)
         .then(result => {
             //success
             console.log("list contracts for tenant " + name)
-            dcorejs.messaging().getMessages(result.id, "5KfhzvrjJqN7R1tf2j5qWKmegDawac6Z4s4pZFBZniCggJmUh81")
+            dcorejs.messaging().getSentMessages(result.id, pk)
                 .then(msg => {
                     msg.forEach(item => {
                         console.log("from:" + item.sender)
@@ -178,9 +188,75 @@ function get_tenant_contracts(name){
 }
 
 
-function get_prop_by_id(id_){
-    var r = prop_db.filter((item)=>(item.id == id_)); 
-    return r[0];
+const get_prop_by_id = async (id_) => {
+    var props = prop_db.filter((item)=>(item.id == id_));
+    if(props.length!=1){
+        return ["not found"]
+    } 
+    var prop = props[0];
+    var prop_contracts = await get_landlord_contracts(prop.owner);
+    console.log("----------------------")
+    if(prop_contracts.length == 0){
+        prop.status = 'free'
+    } else {
+        last_contract = prop_contracts[prop_contracts.length - 1];
+        last_contract_msg = JSON.parse(last_contract.text); 
+        if (last_contract_msg.action == 'CANCEL'){
+            prop.status = 'free'
+            prop.prev_price = JSON.parse(prop_contracts[prop_contracts.length - 2].text).price;
+        } else {
+            prop.status = 'rented'
+            prop.agreement = {
+                sublet_allowed: last_contract_msg.sublet_allowed,
+                sublet: last_contract_msg.sublet,
+                price: last_contract_msg.price
+            }
+            
+        }
+    }    
+    return prop;
+}
+
+const get_prop_by_id_html = async (id_) => {
+    var props = prop_db.filter((item)=>(item.id == id_));
+    if(props.length!=1){
+        return ["not found"]
+    } 
+    var prop = props[0];
+    var prop_contracts = await get_landlord_contracts(prop.owner);
+    console.log("----------------------")
+    if(prop_contracts.length == 0){
+        prop.status = 'free'
+    } else {
+        last_contract = prop_contracts[prop_contracts.length - 1];
+        last_contract_msg = JSON.parse(last_contract.text); 
+        if (last_contract_msg.action == 'CANCEL'){
+            prop.status = 'free'
+            prop.prev_price = JSON.parse(prop_contracts[prop_contracts.length - 2].text).price;
+        } else {
+            prop.status = 'rented'
+            prop.agreement = {
+                sublet_allowed: last_contract_msg.sublet_allowed,
+                sublet: last_contract_msg.sublet,
+                price: last_contract_msg.price
+            }
+            
+        }
+    }    
+    var acc = "<html><body><table>";
+    
+    acc += "<tr><td> Address:</td><td>" + prop.address + "<td></tr>";
+    acc += "<tr><td> Landlord-ID:</td><td>" + prop.owner + "<td></tr>";
+    acc += "<tr><td> Status:</td><td>" + prop.status + "<td></tr>";
+    acc += "</table>";
+    if(prop.status=="free"){
+        acc += "<a href='/newcontract'> Register new rent contract</a>";
+    } else {
+        acc += "<a href='/newsubcontract'> Register new sub-rent contract</a>";
+        acc += "<a href='/cancelcontract'> Cancel contract</a>";
+    }
+    acc += "</body></html>";
+    return acc;
 }
 
 function get_props_by_area_code(ac_){
@@ -198,7 +274,6 @@ function lookup_pk(name_){
 
 //todo
 
-// cancel_contract
 // check_status
 //
 
@@ -220,23 +295,25 @@ function register_contract(landlord_name, tenant_name, contract_data){
     var landlord_id, tenant_id;
     //console.log("### Query id's");
     // <method=CREATE|CANCEL> <0=main|1=sub> <price> <0=sub_not_allowed|1=sub_allowed>
-    var msg = JSON.stringify(
+    var msg = 
         {action:'CREATE',
          sublet:0,
+         tenant:0,
          price:contract_data[0],
          sublet_allowed:contract_data[1],
-         prop_id:contract_data[2]});
+         prop_id:contract_data[2]};
     console.log("message: " + msg)
     pk = lookup_pk(landlord_name);
+    tpk = lookup_pk(tenant_name);
     Promise.all([dcorejs.account().getAccountByName(landlord_name),dcorejs.account().getAccountByName(tenant_name)])
         .then(res => {
             console.log("Landlord ID is:" + res[0].id);
             console.log("Tenant ID is:" + res[1].id);
             
             console.log("### Now broadcast to the blockschain...")
-            dcorejs.messaging().sendMessage(res[0].id,res[1].id,msg,pk)
+            dcorejs.messaging().sendMessage(res[0].id,res[1].id,JSON.stringify(msg),pk)
                 .then(result=>{
-                    console.log("### OK")
+                    console.log("### OK O->T")
                     console.log(result);
                     return 0;
                 })
@@ -244,6 +321,17 @@ function register_contract(landlord_name, tenant_name, contract_data){
                     console.log("### Error sending message");
                     return -1;
                 })
+            msg.tenant = 1;
+            dcorejs.messaging().sendMessage(res[1].id,res[0].id,JSON.stringify(msg),tpk)
+                .then(result=>{
+                    console.log("### OK T->O")
+                    console.log(result);
+                    return 0;
+                })
+                .catch(err => {
+                    console.log("### Error sending message");
+                    return -1;
+                })    
 
         })
         .catch(err => {
@@ -264,6 +352,7 @@ function cancel_contract(landlord_name, tenant_name){
          reason:'...'});
   
     pk = lookup_pk(landlord_name);
+    tpk = lookup_pk(tenant_name);
     Promise.all([dcorejs.account().getAccountByName(landlord_name),dcorejs.account().getAccountByName(tenant_name)])
         .then(res => {
             console.log("Landlord ID is:" + res[0].id);
@@ -272,7 +361,7 @@ function cancel_contract(landlord_name, tenant_name){
             console.log("### Now sending the message...")
             dcorejs.messaging().sendMessage(res[0].id,res[1].id,msg,pk)
                 .then(result=>{
-                    console.log("### Message sent")
+                    console.log("### OK O->T")
                     console.log(result);
                     return 0;
                 })
@@ -281,19 +370,22 @@ function cancel_contract(landlord_name, tenant_name){
                     return -1;
                 })
 
+            dcorejs.messaging().sendMessage(res[1].id,res[0].id,msg,tpk)
+                .then(result=>{
+                    console.log("### OK T->O")
+                    console.log(result);
+                    return 0;
+                })
+                .catch(err => {
+                    console.log("### Error sending message");
+                    return -1;
+                })    
         })
         .catch(err => {
             console.log("### Error\n");
             console.log(err);
         })
 }
-
-
-
-
-
-
-
 
 
 function handle_index(req,res){
