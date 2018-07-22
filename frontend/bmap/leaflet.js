@@ -26,7 +26,7 @@ var tableacc = "";
 for ( var i=0; i < markers.length; ++i )
 {
  L.marker( [markers[i].lat, markers[i].lng], {icon: myIcon} )
-  .bindPopup( '<a href= https://www.yahoo.com"' + markers[i].url + '" target="Hello world">' + markers[i].address + '</a>' )
+  .bindPopup( '<a href="' + markers[i].url + '" target="_blank">' + markers[i].address +  '</a>' )
   .addTo( map );
 
  tableacc += "<tr> <td>" + markers[i].address + " </td> </tr>"

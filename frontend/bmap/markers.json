@@ -7,9 +7,10 @@ markers = [
 },
 
 {
+
 "address": "Hauptstrasse 113, 10827 Berlin",	
 "url" : "https://www.duckduckgo.com",
-"description: 2 Bedroom apartment",
+
 "lat": 52.4817,
 "lng": 13.3472
 },
@@ -20,7 +21,9 @@ markers = [
  "lat": 52.5527,
  "lng": 13.4501
 },
+
 {
+
  "address": "Cautiusstrasse 9, 13587 Berlin",
  "url": "https://www.facebook.com",
  "lat": 52.5622,
