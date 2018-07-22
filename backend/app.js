@@ -31,7 +31,9 @@ app.get('/byname/:name',(req,res)=>{handle_get_by_name(req,res)})
 app.post('/contract/add', upload.array(), (req,res)=>{handle_add_contract(req,res)})
 app.post('/contract/cancel', upload.array(), (req,res)=>{handle_cancel_contract(req,res)})
 
-app.get('/property/:id?', (req, res) => {handle_get_prop_by_id(req, res)})
+app.get('/data/property/:id?', (req, res) => {handle_get_prop_by_id(req, res)})
+
+app.get('/property/:id?', (req, res) => {handle_get_prop_by_id_html(req, res)})
 app.get('/areacode/:ac', (req, res) => {handle_get_by_area_code(req, res)})
 
 
@@ -59,6 +61,16 @@ const handle_get_prop_by_id = async (req, res) =>{
     }
 }
 
+// GET /property/:id
+const handle_get_prop_by_id_html = async (req, res) =>{
+    if(!!req.params.id){
+        r = await get_prop_by_id_html(req.params.id)
+        res.send(r)
+    } else {
+        //fetch all
+        res.json(prop_db);
+    }
+}
 
 const handle_get_landlord_contracts = async (req, res) =>{
     res.json(await get_landlord_contracts(req.params.name));
@@ -71,7 +83,7 @@ function handle_get_by_area_code(req, res){
 }
 
 // POST /contract/add
-function handle_add_contract(req, res){
+const handle_add_contract = async (req, res) => {
     console.warn("Adding contract")
     //console.log(req.body)
     if(!!req.body.l &&
@@ -79,6 +91,8 @@ function handle_add_contract(req, res){
        !!req.body.price &&
        !!req.body.prop_id &&
        !!req.body.sublet){
+
+       prop 
    
         register_contract(req.body.l, req.body.t,
                           [req.body.price, req.body.sublet,req.body.prop_id])
@@ -101,7 +115,6 @@ function handle_cancel_contract(req, res){
         res.json(['error',{description:'Must provide l and q'}])
     }
 }
-
 
 function handle_get_tenant_contracts(req, res){
     res.json(get_tenant_contracts(req.params.name));
@@ -174,23 +187,76 @@ function get_tenant_contracts(name){
         })
 }
 
+
 const get_prop_by_id = async (id_) => {
-    var prop = prop_db.filter((item)=>(item.id == id_))[0]; 
+    var props = prop_db.filter((item)=>(item.id == id_));
+    if(props.length!=1){
+        return ["not found"]
+    } 
+    var prop = props[0];
     var prop_contracts = await get_landlord_contracts(prop.owner);
     console.log("----------------------")
-    last_contract = prop_contracts[prop_contracts.length - 2];
-    last_contract_msg = JSON.parse(last_contract.text); 
-    if (last_contract_msg.action == 'CANCEL'){
+    if(prop_contracts.length == 0){
         prop.status = 'free'
     } else {
-        prop.status = 'rented'
-        prop.agreement = {
-            sublet_allowed: last_contract_msg.sublet_allowed,
-            sublet: last_contract_msg.sublet
+        last_contract = prop_contracts[prop_contracts.length - 1];
+        last_contract_msg = JSON.parse(last_contract.text); 
+        if (last_contract_msg.action == 'CANCEL'){
+            prop.status = 'free'
+            prop.prev_price = JSON.parse(prop_contracts[prop_contracts.length - 2].text).price;
+        } else {
+            prop.status = 'rented'
+            prop.agreement = {
+                sublet_allowed: last_contract_msg.sublet_allowed,
+                sublet: last_contract_msg.sublet,
+                price: last_contract_msg.price
+            }
+            
         }
-    }
-    
+    }    
     return prop;
+}
+
+const get_prop_by_id_html = async (id_) => {
+    var props = prop_db.filter((item)=>(item.id == id_));
+    if(props.length!=1){
+        return ["not found"]
+    } 
+    var prop = props[0];
+    var prop_contracts = await get_landlord_contracts(prop.owner);
+    console.log("----------------------")
+    if(prop_contracts.length == 0){
+        prop.status = 'free'
+    } else {
+        last_contract = prop_contracts[prop_contracts.length - 1];
+        last_contract_msg = JSON.parse(last_contract.text); 
+        if (last_contract_msg.action == 'CANCEL'){
+            prop.status = 'free'
+            prop.prev_price = JSON.parse(prop_contracts[prop_contracts.length - 2].text).price;
+        } else {
+            prop.status = 'rented'
+            prop.agreement = {
+                sublet_allowed: last_contract_msg.sublet_allowed,
+                sublet: last_contract_msg.sublet,
+                price: last_contract_msg.price
+            }
+            
+        }
+    }    
+    var acc = "<html><body><table>";
+    
+    acc += "<tr><td> Address:</td><td>" + prop.address + "<td></tr>";
+    acc += "<tr><td> Landlord-ID:</td><td>" + prop.owner + "<td></tr>";
+    acc += "<tr><td> Status:</td><td>" + prop.status + "<td></tr>";
+    acc += "</table>";
+    if(prop.status=="free"){
+        acc += "<a href='/newcontract'> Register new rent contract</a>";
+    } else {
+        acc += "<a href='/newsubcontract'> Register new sub-rent contract</a>";
+        acc += "<a href='/cancelcontract'> Cancel contract</a>";
+    }
+    acc += "</body></html>";
+    return acc;
 }
 
 function get_props_by_area_code(ac_){
@@ -320,13 +386,6 @@ function cancel_contract(landlord_name, tenant_name){
             console.log(err);
         })
 }
-
-
-
-
-
-
-
 
 
 function handle_index(req,res){
