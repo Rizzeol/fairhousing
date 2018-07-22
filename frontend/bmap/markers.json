@@ -10,39 +10,51 @@ markers = [
 	"owner":"fair-52b509a401914892f3b965d4b10823475a79fe1a"
 },
 
-{
+{	
+	"id":"3131",
 	"description" :"2 bedroom apartment",
 	"address": "Hauptstrasse 113, 10827 Berlin",	
 	"url" : "https://www.duckduckgo.com",
+	"area_code":"1",
 	"lat": 52.4817,
-	"lng": 13.3472
+	"lng": 13.3472,
+	"owner":"fair-38a2645bca5f7c2b2bfddb7a4d5f8663d1723ae3"
 },
 
 {
+	"id":"3127",
 	"description" :"3 bedroom apartment",	
  	"address": "Pistoriusstrasse 29, 13086 Berlin",
 	"url": "https://www.facebook.com",
+	"area_code":"1",
  	"lat": 52.5527,
- 	"lng": 13.4501
+ 	"lng": 13.4501,
+ 	"owner":"fair-38a2645bca5f7c2b2bfddb7a4d5f8663d1723ae3"
 },
 
-{
+{	"id":"3327",
  	"description" :"4 bedroom apartment",	
  	"address": "Cautiusstrasse 9, 13587 Berlin",
  	"url": "https://www.facebook.com",
+ 	"area_code":"3",
  	"lat": 52.5622,
- 	"lng": 13.1996
+ 	"lng": 13.1996,
+ 	"owner":"fair-a952ffc0791dc63d21b0b0b5946f0e063bfa304b"
 },
 
 {
+	"id":"3527",
  	"description" :"5 bedroom apartment",	
  	"address": "Ruhlsdorferstrasse 34, 14532 Stahnsdorf",
  	"url": "https://www.facebook.com",
+ 	"area_code":"4",
  	"lat": 52.3873,
- 	"lng": 13.2341
+ 	"lng": 13.2341,
+ 	"owner":"fair-a952ffc0791dc63d21b0b0b5946f0e063bfa304b"
 },
 
 {
+
 	"description" :"2 bedroom  and Living room apartment",	
  	"address": "Zeppelinstraße 96, 12459 Berlin",
  	"url": "https://www.facebook.com",
@@ -51,3 +63,4 @@ markers = [
 }
 
 ];
+
