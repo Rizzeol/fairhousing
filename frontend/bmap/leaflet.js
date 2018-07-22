@@ -9,5 +9,27 @@ L.tileLayer( 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     subdomains: ['a','b','c']
 }).addTo( map );
 
-var feURL = jQuery( 'script[src$="leaflet.js"]' ).attr( 'src' ).replace( 'leaflet.js', '' )
-var icon = 
+var myURL = jQuery( 'script[src$="leaflet.js"]' ).attr( 'src' ).replace( 'leaflet.js', '' );
+
+
+var myIcon = L.icon({
+  iconUrl: 'img/pin24.png',
+  iconRetinaUrl: 'img/pin48.png',
+  iconSize: [29, 24],
+  iconAnchor: [9, 21],
+  popupAnchor: [0, -14]
+})
+
+var tableacc = "";
+
+
+for ( var i=0; i < markers.length; ++i )
+{
+ L.marker( [markers[i].lat, markers[i].lng], {icon: myIcon} )
+  .bindPopup( '<a href="' + markers[i].url + '" target="_blank">' + markers[i].address +  '</a>' )
+  .addTo( map );
+
+ tableacc += "<tr> <td>" + markers[i].address + " </td> </tr>"
+}
+
+document.getElementById("area").innerHTML = tableacc;

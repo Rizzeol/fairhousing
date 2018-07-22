@@ -1,17 +1,44 @@
 markers = [
 {
-
+"address": "Friedrichstrasse 246, 10969 Berlin",
 "url" : "https://www.youtube.com",
 "lat": 52.5000,
 "lng": 13.3913
 },
 
 {
-	
-"url" : "https://www.youtube.com",
-"lat": 52.4814,
-"lng": 13.3661
+
+"address": "Hauptstrasse 113, 10827 Berlin",	
+"url" : "https://www.duckduckgo.com",
+
+"lat": 52.4817,
+"lng": 13.3472
+},
+
+{
+ "address": "Pistoriusstrasse 29, 13086 Berlin",
+ "url": "https://www.facebook.com",
+ "lat": 52.5527,
+ "lng": 13.4501
+},
+
+{
+
+ "address": "Cautiusstrasse 9, 13587 Berlin",
+ "url": "https://www.facebook.com",
+ "lat": 52.5622,
+ "lng": 13.1996
+},
+
+{
+ "address": "Ruhlsdorfer strasse 34, 14532 Stahnsdorf",
+ "url": "https://www.facebook.com",
+ "lat": 52.3873,
+ "lng": 13.2341
 }
+
+
+
 
 
 ];
