@@ -54,12 +54,14 @@ markers = [
 },
 
 {
-
+	"id":"3899",
 	"description" :"2 bedroom  and Living room apartment",	
  	"address": "Zeppelinstraße 96, 12459 Berlin",
  	"url": "https://www.facebook.com",
+ 	"area_code":"7",
  	"lat": 52.4650,
- 	"lng": 13.5210
+ 	"lng": 13.5210,
+ 	"owner":"fair-38a2645bca5f7c2b2bfddb7a4d5f8663d1723ae3"
 }
 
 ];
