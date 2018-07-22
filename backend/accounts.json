@@ -1,0 +1,42 @@
+[
+    {
+        "brain_priv_key":"LAMPOON KAMALA SOLATE PITMARK MAGGED WIZIER CORTINA JUNKMAN SHOPPE QUINCH FRIZZY SPLIT TREDDLE APOSIA LAMPERN TODDLE",
+        "pub_key": "DCT7YM1pjm8Yra7tDjZGv1EaTJ6DcaCcwU481MW3b7daQMQqF9YuS",
+        "wif_priv_key": "5K7cpdd3ShccurdjQecH8zSRkncT81hUz33MdNV2spYufqGoFTg",
+        "name": "fair-38a2645bca5f7c2b2bfddb7a4d5f8663d1723ae3" 
+    },
+    { 
+        "brain_priv_key": "TRIARII ROUPET UNLOVE FLECKY PAPAW GOAT PRAYFUL SCARE NOTER UNDUG RIPGUT RESHIP CHANGE TCH FLACKED RUCHING",
+        "pub_key": "DCT6jjV32mCn42Fyo1kLoYSxsPCELPd9GZt6Tttnz8B2ZC26g7gwG",
+        "wif_priv_key": "5JHhGHyXt4mi3gC5HVTAufnxgUfRgPv94oLGf3Gb2EjAvSmWJWf",
+        "name": "fair-a952ffc0791dc63d21b0b0b5946f0e063bfa304b" 
+    },
+
+    { 
+        "brain_priv_key":"ALOWE SCREVE RIANT CITRIL BESMOKE TAXEMIC OCCUPY DISJOIN BENSHEA MANID TWITTEN PROFERT TARHOOD DROOPY W COMPART",
+        "pub_key": "DCT8EbA4JCexTnr5Jwip9tUYyjqp8kzm9aGbdn7wQjxqb33hmop54",
+        "wif_priv_key": "5JZAmzCQV2SUD2GbdsgZcpeYzFFRuXq1iMYKhLA4eJFpQQLMF7d",
+        "name": "fair-52b509a401914892f3b965d4b10823475a79fe1a" 
+    },
+
+    { 
+        "brain_priv_key":"SOAKY PARKISH TELANG CALCITE TYLARUS AKOASMA PRETELL CEDARED RECEPT UNPLANK DIVOT ALOW INKISH FURIOSO RIBBY TERNAL",
+        "pub_key": "DCT7MzJJNbAm32Db2BjF98K28BVK39QJFw1k5xUR2RNdD8B9dF6WL",
+        "wif_priv_key": "5KSwgbLpyDB69Zwm7MjRd35DAbBNRj1hgCxcZnqhShn5s5MTqvu",
+        "name": "fair-02c7bb0a0d4cd35fd59cbb21ac8699210f8bd3d4"
+    },
+
+    { 
+        "brain_priv_key":"DITAL BOLDEN CAREEN ENACTOR CYSTINE LUMBANG DOOMER PREP LOOSING ROX ALLAY NOWY OYAPOCK UNSHEET WIFELET CLINAL",
+        "pub_key": "DCT8jJhd6Uwzodo5vN72pWZbCx9qSDKzrDa6SaCDR6BeVZgb2rr66",
+        "wif_priv_key": "5K3mpDJMJd4WEp73duTkT7THvrbJuWKZWKiBDdSN5zad5qhcULj",
+        "name": "fair-d0e36e52de423985835782e09616c7d9ea168f88" 
+    },
+
+    { 
+        "brain_priv_key":"FIGLIKE CASHEL GRAMA LAQUEUS WOOLDER NET PHONY OMBER YITE LOCUSTA CHETTY GARN GAUZE TACTUS AMIDOXY FILTER",
+        "pub_key": "DCT6L6FnPKSPADnL6knCSzfyrEG2D8WXMEdW1VLb5DS9Jhyfd6LV6",
+        "wif_priv_key": "5HyTRLvR3R8Y49s2Pm6Soin5arv7nG7d6GxRXK6v6BtHFjqK4pP",
+        "name": "fair-91769294a5dbf5db770b221f69e038151f875c1b" 
+    }
+]

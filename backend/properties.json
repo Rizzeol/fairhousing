@@ -1,0 +1,49 @@
+[
+    {
+        "id":"3123",
+        "address":"Friedrichstr 34, 2L",
+        "area_code":"2",
+        "coordinates":[32,123],
+        "owner":"fair-52b509a401914892f3b965d4b10823475a79fe1a"
+    },
+    
+    {
+        "id":"3131",
+        "address":"Hauptstr 155, 4R",
+        "area_code":"1",
+        "coordinates":[32,123],
+        "owner":"fair-38a2645bca5f7c2b2bfddb7a4d5f8663d1723ae3"
+    },
+
+    {
+        "id":"3127",
+        "address":"Hauptstr 155, 4L",
+        "area_code":"1",
+        "coordinates":[32,123],
+        "owner":"fair-38a2645bca5f7c2b2bfddb7a4d5f8663d1723ae3"
+    },
+
+    {
+        "id":"3327",
+        "address":"Ebersstr 2, 1L",
+        "coordinates":[32,123],
+        "area_code":"3",
+        "owner":"fair-a952ffc0791dc63d21b0b0b5946f0e063bfa304b"
+    },
+
+    {
+        "id":"3527",
+        "address":"Leipzigerstr 112, 7",
+        "coordinates":[32,123],
+        "area_code":"4",
+        "owner":"fair-a952ffc0791dc63d21b0b0b5946f0e063bfa304b"
+    },
+
+    {
+        "id":"3899",
+        "address":"Kantstr 77, 5R",
+        "coordinates":[32,123],
+        "area_code":"5",
+        "owner":"fair-38a2645bca5f7c2b2bfddb7a4d5f8663d1723ae3"
+    }
+]
