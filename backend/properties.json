@@ -1,9 +1,12 @@
 [
     {
         "id":"3123",
-        "address":"Friedrichstr 34, 2L",
+        "description" :"1 bedroom apartment",
+        "address": "Friedrichstrasse 246, 10969 Berlin",
+        "url" : "https://www.youtube.com",
         "area_code":"2",
-        "coordinates":[32,123],
+        "lat": 52.5000,
+        "lng": 13.3913,
         "owner":"fair-52b509a401914892f3b965d4b10823475a79fe1a"
     },
     
