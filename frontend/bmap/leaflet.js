@@ -25,11 +25,13 @@ var tableacc = "";
 
 for ( var i=0; i < markers.length; ++i )
 {
- L.marker( [markers[i].lat, markers[i].lng], {icon: myIcon} )
-  .bindPopup( '<a href="' + markers[i].url + '" target="_blank">' + markers[i].address +  '</a>' )
-  .addTo( map );
+ 	L.marker( [markers[i].lat, markers[i].lng], {icon: myIcon} )
+ //.addTo(map).bindPopup(markers[i].description + "  ||  "markers[i].address ).openPopup();
+ 	//.bindPopup( '<a href="  markers[i].url' + '" target="_blank">' + markers[i].address +  '</a>' )
+ 	.bindPopup( markers[i].description + "  ||  "  + markers[i].address)
+ 	.addTo( map );
 
- tableacc += "<tr> <td>" + markers[i].address + " </td> </tr>"
+ tableacc += "<tr> <td>" + markers[i].address + "    ||   " + markers[i].description+ " </td> </tr>"
 }
 
 document.getElementById("area").innerHTML = tableacc;

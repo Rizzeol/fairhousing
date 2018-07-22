@@ -1,5 +1,6 @@
 markers = [
 {
+"description" :"1 bedroom apartment",
 "address": "Friedrichstrasse 246, 10969 Berlin",
 "url" : "https://www.youtube.com",
 "lat": 52.5000,
@@ -7,7 +8,7 @@ markers = [
 },
 
 {
-
+"description" :"2 bedroom apartment",
 "address": "Hauptstrasse 113, 10827 Berlin",	
 "url" : "https://www.duckduckgo.com",
 
@@ -16,6 +17,7 @@ markers = [
 },
 
 {
+ "description" :"3 bedroom apartment",	
  "address": "Pistoriusstrasse 29, 13086 Berlin",
  "url": "https://www.facebook.com",
  "lat": 52.5527,
@@ -23,7 +25,7 @@ markers = [
 },
 
 {
-
+ "description" :"4 bedroom apartment",	
  "address": "Cautiusstrasse 9, 13587 Berlin",
  "url": "https://www.facebook.com",
  "lat": 52.5622,
@@ -31,6 +33,7 @@ markers = [
 },
 
 {
+ "description" :"5 bedroom apartment",	
  "address": "Ruhlsdorfer strasse 34, 14532 Stahnsdorf",
  "url": "https://www.facebook.com",
  "lat": 52.3873,
